@@ -1,0 +1,42 @@
+docker pull mysql:latest
+docker images
+docker run --name db -d -p3306:3306 -e MYSQL_ROOT_PASSWORD=123 mysql:latest
+docker ps
+docker exec -it db /bin/bash
+
+dentro del container
+
+mysql -uroot -p123
+
+salir del container
+
+docker stop db
+docker ps -- para ver que no hay nada corriendo
+
+vim Dockerfile
+----
+FROM mysql:latest
+ENV MYSQL_ROOT_PASSWORD 123
+ENV MYSQL_DATABASE users
+ENV MYSQL_USER aminos
+ENV MYSQL_PASSWORD 1234
+ADD setup.sql /docker-entrypoint-initdb.d
+EXPOSE 3306
+----
+
+setup.sql crea una tabla y tiene los inserts
+
+ejecutar
+docker build -t amine/mysql01 .
+
+docker images --- para ver la que se acaba de crear
+
+ejecutar la imagen 
+
+docker run --name db2 -p3306:3306 -d amine/msyql01
+
+conectar con el container que esta andando
+
+docker exec -it db /bin/bash
+
+
